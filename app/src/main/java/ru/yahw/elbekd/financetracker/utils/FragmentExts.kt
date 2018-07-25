@@ -11,17 +11,17 @@ fun FragmentManager.replace(container: Int, fr: Fragment, tag: String, rootTag: 
     if (findFragmentByTag(tag) != null) return
     popBackStack(rootTag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     beginTransaction()
-            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            .setCustomAnimations(R.anim.right_in, R.anim.left_out)
             .replace(container, fr)
-            .addToBackStack(rootTag)
+            .addToBackStack(null)
             .commit()
 }
 
 fun FragmentManager.addOnTop(container: Int, fr: Fragment, tag: String, rootTag: String) {
     if (findFragmentByTag(tag) != null) return
     beginTransaction()
-            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            .setCustomAnimations(R.anim.right_in, R.anim.left_out)
             .replace(container, fr)
-            .addToBackStack(rootTag)
+            .addToBackStack(null)
             .commit()
 }

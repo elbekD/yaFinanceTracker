@@ -1,6 +1,7 @@
 package ru.yahw.elbekd.financetracker.ui.base
 
-import android.content.Context
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -12,22 +13,9 @@ import android.widget.Toast
  * Created by Elbek D. on 22.07.2018.
  */
 abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
-    lateinit var vm: V
-    lateinit var activity: BaseActivity<*>
-
-    abstract fun getViewModel(): V
     abstract fun getLayoutId(): Int
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is BaseActivity<*>)
-            activity = context
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        vm = getViewModel()
-    }
+    protected inline fun <reified T : V> getViewModel(factory: ViewModelProvider.Factory): T = ViewModelProviders.of(this, factory)[T::class.java]
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(getLayoutId(), container, false)
@@ -42,6 +30,6 @@ abstract class BaseFragment<V : BaseViewModel<*>> : Fragment() {
     }
 
     fun hideKeyboard() {
-        activity.hideKeyboard()
+        (activity as? BaseActivity<*>)?.hideKeyboard()
     }
 }
