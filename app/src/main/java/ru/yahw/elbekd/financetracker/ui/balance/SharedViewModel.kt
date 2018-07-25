@@ -5,11 +5,12 @@ import android.arch.lifecycle.MutableLiveData
 import ru.yahw.elbekd.financetracker.domain.model.Balance
 import ru.yahw.elbekd.financetracker.domain.model.Operation
 import ru.yahw.elbekd.financetracker.ui.base.BaseViewModel
+import javax.inject.Inject
 
 /**
  * Created by Elbek D. on 22.07.2018.
  */
-class SharedViewModel : BaseViewModel<BalanceNavigator>() {
+class SharedViewModel @Inject constructor() : BaseViewModel<BalanceNavigator>() {
     private val _balance = MutableLiveData<Balance>().also { it.value = Balance(1250, 650) }
     fun updateBalance(operation: Operation) {
         val b = _balance.value!!
