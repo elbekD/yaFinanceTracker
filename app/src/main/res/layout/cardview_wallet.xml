@@ -35,12 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/remainder"
+                android:text="@string/all_remainder"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/account_title" />
 
             <TextView
-                android:id="@+id/main_currency_value"
+                android:id="@+id/tv_main_currency_value"
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,13 +49,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_remainder" />
 
             <TextView
-                android:id="@+id/secondary_currency_value"
+                android:id="@+id/tv_secondary_currency_value"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/main_currency_value"
-                app:layout_constraintTop_toBottomOf="@+id/main_currency_value" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_main_currency_value"
+                app:layout_constraintTop_toBottomOf="@+id/tv_main_currency_value" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/cardview_wallat_piechart"
@@ -68,27 +68,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/account_title" />
 
             <TextView
-                android:id="@+id/main_currency_name"
+                android:id="@+id/tv_main_currency_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toEndOf="@+id/main_currency_value"
+                app:layout_constraintStart_toEndOf="@+id/tv_main_currency_value"
                 app:layout_constraintTop_toBottomOf="@+id/tv_remainder" />
 
             <TextView
-                android:id="@+id/secondary_currency_name"
+                android:id="@+id/tv_secondary_currency_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/main_currency_name"
-                app:layout_constraintStart_toEndOf="@+id/secondary_currency_value"
-                app:layout_constraintTop_toBottomOf="@+id/main_currency_name" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_main_currency_name"
+                app:layout_constraintStart_toEndOf="@+id/tv_secondary_currency_value"
+                app:layout_constraintTop_toBottomOf="@+id/tv_main_currency_name" />
 
         </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:id="@+id/current_currency"
+            android:id="@+id/tv_current_currency"
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

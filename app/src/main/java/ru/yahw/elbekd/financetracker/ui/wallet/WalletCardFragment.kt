@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.cardview_wallet.view.*
 import ru.yahw.elbekd.financetracker.R
 import ru.yahw.elbekd.financetracker.di.Injectable
 import ru.yahw.elbekd.financetracker.domain.model.Transaction
@@ -51,11 +52,11 @@ class WalletCardFragment : BaseFragment<WalletViewModel>(), Injectable {
             it?.let {
                 val remainder = it.asSequence().sumByDouble { it.amount.toDouble() }
                 with(v) {
-                    findViewById<TextView>(R.id.account_title).text = wallet.type
-                    findViewById<TextView>(R.id.main_currency_value).text = String.format("%.2f", remainder)
-                    findViewById<TextView>(R.id.main_currency_name).text = wallet.mainCurrency
-                    findViewById<TextView>(R.id.secondary_currency_value).text = remainder.toString()
-                    findViewById<TextView>(R.id.secondary_currency_name).text = wallet.secondaryCurrency
+                    account_title.text = wallet.name
+                    tv_main_currency_value.text = String.format("%.2f", remainder)
+                    tv_main_currency_name.text = wallet.mainCurrency
+                    tv_secondary_currency_value.text = remainder.toString()
+                    tv_secondary_currency_name.text = wallet.secondaryCurrency
                 }
                 setupPieChart(v, it)
                 setupCurrency(v, wallet)
@@ -71,12 +72,12 @@ class WalletCardFragment : BaseFragment<WalletViewModel>(), Injectable {
                     val c = it["${w.mainCurrency}_${w.secondaryCurrency}"].toString().toDouble()
                     with(v) {
 
-                        with(findViewById<TextView>(R.id.current_currency)) {
-                            text = String.format(getString(R.string.currency_format), w.mainCurrency, c, w.secondaryCurrency)
+                        with(findViewById<TextView>(R.id.tv_current_currency)) {
+                            text = String.format(getString(R.string.template_currency), w.mainCurrency, c, w.secondaryCurrency)
                             setBackgroundColor(getColor(context, R.color.health))
                         }
 
-                        with(findViewById<TextView>(R.id.secondary_currency_value)) {
+                        with(findViewById<TextView>(R.id.tv_secondary_currency_value)) {
                             text = String.format("%.2f", text.toString().toDouble() * c)
                         }
                     }
@@ -92,7 +93,7 @@ class WalletCardFragment : BaseFragment<WalletViewModel>(), Injectable {
         val list = mutableListOf<PieEntry>()
         expenses.forEach { list.add(PieEntry(overallAmount / -it.amount.toFloat(), it.type)) }
 
-        val pieDataSet = PieDataSet(list, getString(R.string.expense))
+        val pieDataSet = PieDataSet(list, getString(R.string.all_expense))
         pieDataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
         pieDataSet.setDrawValues(false)
         with(v.findViewById<PieChart>(R.id.cardview_wallat_piechart)) {

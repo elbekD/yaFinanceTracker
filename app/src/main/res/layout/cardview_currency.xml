@@ -6,7 +6,7 @@
     app:cardCornerRadius="8dp">
 
     <TextView
-        android:id="@+id/current_currency"
+        android:id="@+id/tv_current_currency"
         style="@style/Base.TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

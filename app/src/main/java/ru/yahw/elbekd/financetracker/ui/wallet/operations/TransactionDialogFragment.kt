@@ -53,11 +53,11 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
         val view = inflater.inflate(R.layout.dialog_transaction, null)
 
         dialogBuilder.setView(view)
-                .setTitle(R.string.add_transaction)
-                .setPositiveButton(R.string.confirm) { _, _ ->
+                .setTitle(R.string.transaction_add)
+                .setPositiveButton(R.string.all_confirm) { _, _ ->
                     vm.commitTransaction(gatherTransaction())
                 }
-                .setNegativeButton(R.string.cancel) { _, _ -> }
+                .setNegativeButton(R.string.all_cancel) { _, _ -> }
 
         transactionDialog = dialogBuilder.create().apply {
             setOnShowListener { addAmountTextListener(view) }
