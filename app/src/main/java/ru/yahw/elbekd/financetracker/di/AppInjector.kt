@@ -10,7 +10,6 @@ import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import ru.yahw.elbekd.financetracker.App
-import ru.yahw.elbekd.financetracker.Injectable
 
 /**
  * Created by Elbek D. on 24.07.2018.

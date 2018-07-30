@@ -6,8 +6,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import ru.yahw.elbekd.financetracker.ui.about.AboutViewModel
-import ru.yahw.elbekd.financetracker.ui.balance.SharedViewModel
-import ru.yahw.elbekd.financetracker.ui.main.MainViewModel
+import ru.yahw.elbekd.financetracker.ui.main.MainFragmentViewModel
+import ru.yahw.elbekd.financetracker.ui.wallet.WalletViewModel
+import ru.yahw.elbekd.financetracker.ui.wallet.operations.TransactionViewModel
 import javax.inject.Singleton
 
 /**
@@ -17,23 +18,29 @@ import javax.inject.Singleton
 abstract class ViewModelModule {
     @Binds
     @IntoMap
-//    @Singleton
+    @Singleton
     @ViewModelKey(AboutViewModel::class)
     abstract fun bindAboutVM(aboutVM: AboutViewModel): ViewModel
 
     @Binds
     @IntoMap
     @Singleton
-    @ViewModelKey(SharedViewModel::class)
-    abstract fun bindBalanceVM(balanceVM: SharedViewModel): ViewModel
+    @ViewModelKey(WalletViewModel::class)
+    abstract fun bindWalletVM(balanceVM: WalletViewModel): ViewModel
 
     @Binds
     @IntoMap
-//    @Singleton
-    @ViewModelKey(MainViewModel::class)
-    abstract fun bindMainVM(mainVM: MainViewModel): ViewModel
+    @Singleton
+    @ViewModelKey(MainFragmentViewModel::class)
+    abstract fun bindMainVM(balanceVM: MainFragmentViewModel): ViewModel
 
     @Binds
-//    @Singleton
+    @IntoMap
+    @Singleton
+    @ViewModelKey(TransactionViewModel::class)
+    abstract fun bindTransactionVM(transactionVM: TransactionViewModel): ViewModel
+
+    @Binds
+    @Singleton
     abstract fun bindVMFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
