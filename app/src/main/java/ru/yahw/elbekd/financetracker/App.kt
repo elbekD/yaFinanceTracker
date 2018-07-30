@@ -2,6 +2,7 @@ package ru.yahw.elbekd.financetracker
 
 import android.app.Activity
 import android.app.Application
+import com.androidnetworking.AndroidNetworking
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import ru.yahw.elbekd.financetracker.di.AppInjector
@@ -17,6 +18,7 @@ class App : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
+        AndroidNetworking.initialize(applicationContext)
     }
 
     override fun activityInjector() = dispatchingAndroidInjector

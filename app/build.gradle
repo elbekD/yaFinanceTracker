@@ -37,9 +37,20 @@ dependencies {
     implementation "com.android.support:design:$versions.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
     implementation "com.android.support:preference-v7:$versions.supportLibrary"
+    implementation "com.android.support:support-v4:$versions.supportLibrary"
 
     // aac
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+
+    // bottom navigation
+    compile "com.aurelhubert:ahbottomnavigation:$versions.bottomNavigation"
+
+    // network
+    implementation "com.amitshekhar.android:rx2-android-networking:$versions.rx2FastAndroidNetworking"
+
+    // ui
+    implementation "com.github.PhilJay:MPAndroidChart:$versions.MPAndroidChart"
+    implementation "com.afollestad.material-dialogs:core:$versions.materialDialog"
 
     // di
     implementation "com.google.dagger:dagger:$versions.dagger2"

@@ -1,11 +1,9 @@
 package ru.yahw.elbekd.financetracker.ui.about
 
-import ru.yahw.elbekd.financetracker.ui.base.BaseViewModel
+import android.arch.lifecycle.ViewModel
 import javax.inject.Inject
 
 /**
- * Created by Elbek D. on 22.07.2018.
+ * Created by Elbek D. on 28.07.2018.
  */
-class AboutViewModel @Inject constructor() : BaseViewModel<AboutNavigator>() {
-    fun onNavBackClick() = navigator.onNavBackClick()
-}
+class AboutViewModel @Inject constructor() : ViewModel()

@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -36,6 +37,16 @@ versions.lifecycle = "1.1.1"
 
 // di
 versions.dagger2 = "2.15"
+
+// bottom navigation
+versions.bottomNavigation = "2.1.0"
+
+// ui
+versions.MPAndroidChart = "v3.0.3"
+versions.materialDialog = "0.9.6.0"
+
+// network
+versions.rx2FastAndroidNetworking = "1.0.2"
 
 // test
 versions.hamcrest = "1.3"
