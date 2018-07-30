@@ -13,12 +13,14 @@
 
     </FrameLayout>
 
-    <com.aurelhubert.ahbottomnavigation.AHBottomNavigation
+    <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:itemIconTint="@drawable/selector_bottombar_item"
-        app:itemTextColor="@drawable/selector_bottombar_text" />
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@drawable/selector_bottom_nav"
+        app:itemTextColor="@drawable/selector_bottom_nav"
+        app:menu="@menu/bottombar_menu" />
 
 </android.support.design.widget.CoordinatorLayout>

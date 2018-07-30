@@ -3,7 +3,6 @@ package ru.yahw.elbekd.financetracker
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,10 +37,6 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
                         AboutFragment.TAG)
     }
 
-    private fun openOperation() {
-
-    }
-
     private fun openBalance() {
         supportFragmentManager.replace(R.id.container,
                 MainFragment.newInstance(),
@@ -49,14 +44,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     private fun setupBottomNavigation() {
-        val adapter = AHBottomNavigationAdapter(this, R.menu.bottombar_menu)
-        adapter.setupWithBottomNavigation(bottomNavigation)
-        bottomNavigation.currentItem = 0
-        bottomNavigation.setOnTabSelectedListener { position, _ ->
-            when (position) {
-                0 -> openBalance()
-                1 -> openSettings()
-                2 -> openAbout()
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.balance -> openBalance()
+                R.id.settings -> openSettings()
+                R.id.about -> openAbout()
             }
             true
         }
