@@ -40,7 +40,6 @@ versions.dagger2 = "2.15"
 
 // ui
 versions.MPAndroidChart = "v3.0.3"
-versions.materialDialog = "0.9.6.0"
 
 // network
 versions.rx2FastAndroidNetworking = "1.0.2"

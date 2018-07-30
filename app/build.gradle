@@ -47,7 +47,6 @@ dependencies {
 
     // ui
     implementation "com.github.PhilJay:MPAndroidChart:$versions.MPAndroidChart"
-    implementation "com.afollestad.material-dialogs:core:$versions.materialDialog"
 
     // di
     implementation "com.google.dagger:dagger:$versions.dagger2"
