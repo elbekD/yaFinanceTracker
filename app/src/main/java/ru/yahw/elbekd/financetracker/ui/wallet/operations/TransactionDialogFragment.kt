@@ -1,5 +1,6 @@
 package ru.yahw.elbekd.financetracker.ui.wallet.operations
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.arch.lifecycle.MutableLiveData
@@ -10,8 +11,6 @@ import android.text.TextWatcher
 import android.text.format.DateUtils
 import android.view.View
 import android.widget.*
-import com.afollestad.materialdialogs.DialogAction
-import com.afollestad.materialdialogs.MaterialDialog
 import ru.yahw.elbekd.financetracker.R
 import ru.yahw.elbekd.financetracker.di.Injectable
 import ru.yahw.elbekd.financetracker.domain.model.Transaction
@@ -27,16 +26,15 @@ import java.util.*
  */
 class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable {
     companion object {
-        @JvmStatic
+        private val amountRegex = """^\d+(\.\d*)?$""".toRegex()
         val TAG = TransactionDialogFragment::class.java.simpleName
-
-        @JvmStatic
         fun newInstance() = TransactionDialogFragment()
     }
 
     private lateinit var vm: TransactionViewModel
-    private lateinit var dialog: MaterialDialog
     private val calendar = MutableLiveData<Calendar>().apply { value = Calendar.getInstance() }
+    private lateinit var transactionDialog: AlertDialog
+    private lateinit var dialogView: View
 
     private val datePickerDialog: DatePickerDialog by lazy {
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -50,25 +48,23 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         vm = getViewModel()
+        val inflater = activity!!.layoutInflater
+        val dialogBuilder = AlertDialog.Builder(activity)
+        val view = inflater.inflate(R.layout.dialog_transaction, null)
 
-        val dialogBuilder = MaterialDialog.Builder(activity!!)
-                .customView(R.layout.dialog_transaction, true)
-                .title(R.string.add_transaction)
-                .positiveText(R.string.confirm)
-                .negativeText(R.string.cancel)
-                .onPositive { _, _ -> vm.commitTransaction(gatherTransaction()) }
+        dialogBuilder.setView(view)
+                .setTitle(R.string.add_transaction)
+                .setPositiveButton(R.string.confirm) { _, _ ->
+                    vm.commitTransaction(gatherTransaction())
+                }
+                .setNegativeButton(R.string.cancel) { _, _ -> }
 
-        dialog = dialogBuilder.build()
-        dialog.getActionButton(DialogAction.POSITIVE).isEnabled = false
-        return dialog
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setupViews(dialog.customView!!)
-        setupAdapters(dialog.customView!!)
-        setupCurrency(dialog.customView!!)
-        addAmountTextListener(dialog.customView!!)
+        transactionDialog = dialogBuilder.create().apply {
+            setOnShowListener { addAmountTextListener(view) }
+        }
+        dialogView = view
+        setupViews(view)
+        return transactionDialog
     }
 
     private fun setupDateTextView(v: TextView) {
@@ -99,11 +95,10 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
                         override fun onNothingSelected(p0: AdapterView<*>?) {
                         }
 
-                        override fun onItemSelected(root: AdapterView<*>, view: View, position: Int, id: Long) = vm.setTransactionWallet(selectedItem.toString())
+                        override fun onItemSelected(root: AdapterView<*>, view: View?, position: Int, id: Long) = vm.setTransactionWallet(selectedItem.toString())
                     }
                     adapter = walletAdapter
                 }
-
             }
         })
 
@@ -116,20 +111,23 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
     }
 
     private fun addAmountTextListener(v: View) {
-        v.findViewById<EditText>(R.id.input_amount).addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(e: Editable?) {
-                e?.let {
-                    val isEnabled = it.toString().matches("""^\d+(\.\d*)?$""".toRegex())
-                    dialog.getActionButton(DialogAction.POSITIVE).isEnabled = isEnabled
+        with(v.findViewById<EditText>(R.id.input_amount)) {
+
+            val confirmButton = transactionDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            confirmButton.isEnabled = text?.toString()?.matches(amountRegex) ?: false
+
+            addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(e: Editable?) {
+                    e?.let { confirmButton.isEnabled = it.toString().matches(amountRegex) }
                 }
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+        }
     }
 
     private fun setupCurrency(v: View) {
@@ -139,14 +137,13 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
     }
 
     private fun gatherTransaction(): Transaction {
-        val v = dialog.customView!!
         val formatter = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault())
-        val date = formatter.parse(v.findViewById<TextView>(R.id.tv_transaction_date).text.toString()).time
-        val currency = v.findViewById<TextView>(R.id.tv_transaction_currency).text.toString()
-        val type = v.findViewById<Spinner>(R.id.spinner_category).selectedItem.toString()
-        val wallet = v.findViewById<Spinner>(R.id.spinner_wallets).selectedItem.toString()
-        val isNegative = v.findViewById<RadioGroup>(R.id.operation_type).checkedRadioButtonId == R.id.income
-        val amount = v.findViewById<EditText>(R.id.input_amount).text!!.toString()
+        val date = formatter.parse(dialogView.findViewById<TextView>(R.id.tv_transaction_date).text.toString()).time
+        val currency = dialogView.findViewById<TextView>(R.id.tv_transaction_currency).text.toString()
+        val type = dialogView.findViewById<Spinner>(R.id.spinner_category).selectedItem.toString()
+        val wallet = dialogView.findViewById<Spinner>(R.id.spinner_wallets).selectedItem.toString()
+        val isNegative = dialogView.findViewById<RadioGroup>(R.id.operation_type).checkedRadioButtonId == R.id.income
+        val amount = dialogView.findViewById<EditText>(R.id.input_amount).text!!.toString()
         return Transaction(wallet, date, BigDecimal(amount).makeNegative(isNegative), currency, type)
     }
 }
