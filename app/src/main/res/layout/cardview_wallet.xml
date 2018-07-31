@@ -8,12 +8,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/account_title"
@@ -61,7 +61,7 @@
                 android:id="@+id/cardview_wallat_piechart"
                 android:layout_width="138dp"
                 android:layout_height="138dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/account_title"
@@ -91,7 +91,9 @@
             android:id="@+id/tv_current_currency"
             style="@style/Base.TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:textAlignment="center" />
     </LinearLayout>

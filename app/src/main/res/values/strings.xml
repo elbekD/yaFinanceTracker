@@ -15,7 +15,7 @@
     <string name="about_content">Yandex.Homework: Finance Tracker</string>
 
     <string name="template_date">%d.%d.%d</string>
-    <string name="template_currency">1 %s = %.2f %s</string>
+    <string name="template_currency">1 %s = %s %s</string>
 
     <string name="unknown_error">Unknown error</string>
 </resources>

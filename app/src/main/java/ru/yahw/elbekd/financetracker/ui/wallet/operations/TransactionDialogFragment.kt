@@ -32,9 +32,10 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
     }
 
     private lateinit var vm: TransactionViewModel
-    private val calendar = MutableLiveData<Calendar>().apply { value = Calendar.getInstance() }
     private lateinit var transactionDialog: AlertDialog
     private lateinit var dialogView: View
+
+    private val calendar = MutableLiveData<Calendar>().apply { value = Calendar.getInstance() }
 
     private val datePickerDialog: DatePickerDialog by lazy {
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->

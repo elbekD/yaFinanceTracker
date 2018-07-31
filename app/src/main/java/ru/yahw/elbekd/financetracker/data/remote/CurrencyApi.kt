@@ -1,11 +1,10 @@
 package ru.yahw.elbekd.financetracker.data.remote
 
-import io.reactivex.Single
-import org.json.JSONObject
+import android.arch.lifecycle.LiveData
 
 /**
  * Created by Elbek D. on 30.07.2018.
  */
 interface CurrencyApi {
-    fun convert(from: String, to: String): Single<JSONObject>
+    fun convert(from: String, to: String): LiveData<Double>
 }

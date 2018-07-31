@@ -34,6 +34,7 @@ versions.constraintLayout = "1.1.2"
 
 // aac
 versions.lifecycle = "1.1.1"
+versions.work = "1.0.0-alpha05"
 
 // di
 versions.dagger2 = "2.15"
@@ -42,7 +43,7 @@ versions.dagger2 = "2.15"
 versions.MPAndroidChart = "v3.0.3"
 
 // network
-versions.rx2FastAndroidNetworking = "1.0.2"
+versions.okhttp = "3.11.0"
 
 // test
 versions.hamcrest = "1.3"

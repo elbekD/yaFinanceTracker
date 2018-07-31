@@ -16,13 +16,8 @@ import ru.yahw.elbekd.financetracker.ui.wallet.operations.TransactionDialogFragm
  */
 class MainFragment : BaseFragment<MainFragmentViewModel>(), Injectable {
     companion object {
-        @JvmStatic
         val TAG: String = MainFragment::class.java.simpleName
-
-        @JvmStatic
-        fun newInstance(): Fragment {
-            return MainFragment()
-        }
+        fun newInstance() = MainFragment()
     }
 
     private lateinit var vm: MainFragmentViewModel
@@ -30,7 +25,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         vm = getViewModel()
-        vm.getWallets().observe(this.viewLifecycleOwner, Observer {
+
+        vm.getWallets().observe(this, Observer {
             it?.let { list ->
                 val fragmentList = mutableListOf<Fragment>()
                 list.forEach { w ->
@@ -40,6 +36,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), Injectable {
                 cardview_wallet_pager.adapter = WalletPagerAdapter(childFragmentManager, fragmentList)
             }
         })
+
         setupFabButton()
     }
 

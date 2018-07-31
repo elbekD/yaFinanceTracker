@@ -8,12 +8,12 @@ import ru.yahw.elbekd.financetracker.domain.model.Wallet
  */
 interface WalletDao {
     /**
-     * Save wallet
+     * Save addWallet
      */
     fun wallet(w: Wallet)
 
     /**
-     * Get wallet by name
+     * Get addWallet by name
      */
     fun wallet(name: String): LiveData<Wallet>
 
