@@ -4,14 +4,14 @@
     <item
         android:id="@+id/balance"
         android:icon="@drawable/ic_menu_balance"
-        android:title="@string/balance" />
+        android:title="@string/all_balance" />
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_menu_settings"
-        android:title="@string/settings" />
+        android:title="@string/all_settings" />
     <item
         android:id="@+id/about"
         android:icon="@drawable/ic_menu_about"
-        android:title="@string/about" />
+        android:title="@string/all_about" />
 
 </menu>

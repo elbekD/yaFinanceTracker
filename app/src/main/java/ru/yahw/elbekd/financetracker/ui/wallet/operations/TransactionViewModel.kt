@@ -18,6 +18,7 @@ class TransactionViewModel @Inject constructor(
         private val walletRepo: WalletRepo,
         private val transactionRepo: TransactionRepo,
         private val categoryRepo: CategoryRepo) : ViewModel() {
+
     private val transactionWallet = MutableLiveData<String>()
 
     val transactionCurrency: LiveData<Wallet> = Transformations.switchMap(transactionWallet) {

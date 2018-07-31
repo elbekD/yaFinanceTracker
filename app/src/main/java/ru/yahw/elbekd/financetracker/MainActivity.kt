@@ -12,6 +12,9 @@ import ru.yahw.elbekd.financetracker.ui.settings.SettingsFragment
 import ru.yahw.elbekd.financetracker.utils.replace
 import javax.inject.Inject
 
+/**
+ * Created by Elbek D. on 29.07.2018.
+ */
 class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
     }
 
     private fun setupBottomNavigation() {
-        bottomNavigation.setOnNavigationItemSelectedListener {
+        bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.balance -> openBalance()
                 R.id.settings -> openSettings()

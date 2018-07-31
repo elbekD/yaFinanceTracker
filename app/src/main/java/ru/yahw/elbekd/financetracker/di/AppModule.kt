@@ -1,7 +1,9 @@
 package ru.yahw.elbekd.financetracker.di
 
+import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import ru.yahw.elbekd.financetracker.data.remote.RemoteApi
 import ru.yahw.elbekd.financetracker.domain.repository.CategoryRepo
 import ru.yahw.elbekd.financetracker.domain.repository.TransactionRepo
@@ -23,7 +25,15 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRemoteApi() = RemoteApi()
+    fun provideOkHttpClient() = OkHttpClient()
+
+    @Singleton
+    @Provides
+    fun provideRemoteApi(okHttpClient: OkHttpClient) = RemoteApi(okHttpClient)
+
+    @Singleton
+    @Provides
+    fun provideWorkManager() = WorkManager.getInstance()
 
     @Singleton
     @Provides

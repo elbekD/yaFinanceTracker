@@ -41,9 +41,10 @@ dependencies {
 
     // aac
     implementation "android.arch.lifecycle:extensions:$versions.lifecycle"
+    implementation "android.arch.work:work-runtime-ktx:$versions.work"
 
     // network
-    implementation "com.amitshekhar.android:rx2-android-networking:$versions.rx2FastAndroidNetworking"
+    implementation "com.squareup.okhttp3:okhttp:$versions.okhttp"
 
     // ui
     implementation "com.github.PhilJay:MPAndroidChart:$versions.MPAndroidChart"
