@@ -8,6 +8,8 @@ import dagger.multibindings.IntoMap
 import ru.yahw.elbekd.financetracker.ui.about.AboutViewModel
 import ru.yahw.elbekd.financetracker.ui.main.MainFragmentViewModel
 import ru.yahw.elbekd.financetracker.ui.wallet.WalletViewModel
+import ru.yahw.elbekd.financetracker.ui.wallet.operations.NewWalletViewModel
+import ru.yahw.elbekd.financetracker.ui.wallet.operations.PeriodicOperationVM
 import ru.yahw.elbekd.financetracker.ui.wallet.operations.TransactionViewModel
 import javax.inject.Singleton
 
@@ -41,6 +43,20 @@ abstract class ViewModelModule {
     abstract fun bindTransactionVM(transactionVM: TransactionViewModel): ViewModel
 
     @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(NewWalletViewModel::class)
+    abstract fun bindNewWalletVM(newWalletViewModel: NewWalletViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(PeriodicOperationVM::class)
+    abstract fun bindPeriodicOperationVM(periodicOperationVM: PeriodicOperationVM): ViewModel
+
+
+    @Binds
     @Singleton
     abstract fun bindVMFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
 }

@@ -22,4 +22,32 @@
         android:clickable="true"
         android:focusable="true"
         app:srcCompat="@drawable/ic_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_wallet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_wallet" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_cash_usd" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_pereodic_transaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_pereodic_transaction" />
+
 </android.support.design.widget.CoordinatorLayout>

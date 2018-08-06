@@ -10,4 +10,6 @@
     <color name="food">#FFFF9640</color>
     <color name="health">#FFB3FF40</color>
     <color name="home">#FFA9B39B</color>
+    <color name="salary">#FF4081</color>
+
 </resources>

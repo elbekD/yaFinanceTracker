@@ -1,5 +1,6 @@
 package ru.yahw.elbekd.financetracker.di
 
+import android.app.Application
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
@@ -21,7 +22,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideTransactionRepo() = TransactionRepo()
+    fun provideTransactionRepo(application: Application) = TransactionRepo(application)
 
     @Singleton
     @Provides
@@ -37,5 +38,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideWalletRepo(remoteApi: RemoteApi) = WalletRepo(remoteApi)
+    fun provideWalletRepo(remoteApi: RemoteApi, application: Application) = WalletRepo(remoteApi, application)
+
+
+
 }

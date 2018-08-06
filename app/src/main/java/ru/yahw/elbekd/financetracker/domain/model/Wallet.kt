@@ -6,4 +6,5 @@ package ru.yahw.elbekd.financetracker.domain.model
 data class Wallet(val name: String,
                   val type: String,
                   val mainCurrency: String,
-                  val secondaryCurrency: String)
+                  val sum: String
+)
