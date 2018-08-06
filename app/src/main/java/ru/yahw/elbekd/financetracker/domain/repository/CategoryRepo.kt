@@ -13,7 +13,8 @@ class CategoryRepo @Inject constructor(/*private val typeDao: CategoryDao*/) {
         val types = listOf(
                 Category("Food", R.color.food, R.drawable.ic_category_food),
                 Category("Health", R.color.health, R.drawable.ic_category_health),
-                Category("Home", R.color.home, R.drawable.ic_category_home))
+                Category("Home", R.color.home, R.drawable.ic_category_home),
+                Category("Income", R.color.salary, R.drawable.ic_category_salary))
     }
 
     fun categories() = MutableLiveData<List<Category>>().apply { value = types }//typeDao.types()

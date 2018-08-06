@@ -6,4 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="nav_drawer_top_padding">0dp</dimen>
+
+    <dimen name="animate_fab_gravity_Y_115">115dp</dimen>
+    <dimen name="animate_fab_gravity_Y_165">165dp</dimen>
+    <dimen name="animate_fab_gravity_Y_215">215dp</dimen>
 </resources>

@@ -12,6 +12,8 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.android.synthetic.main.cardview_wallet.*
 import ru.yahw.elbekd.financetracker.R
+import ru.yahw.elbekd.financetracker.data.db.entities.TransactionData
+import ru.yahw.elbekd.financetracker.data.db.entities.WalletData
 import ru.yahw.elbekd.financetracker.di.Injectable
 import ru.yahw.elbekd.financetracker.domain.model.Transaction
 import ru.yahw.elbekd.financetracker.domain.model.Wallet
@@ -35,17 +37,20 @@ class WalletCardFragment : BaseFragment<WalletViewModel>(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         vm = getViewModel()
         val v = inflater.inflate(R.layout.cardview_wallet, container, false)
+
         vm.getWalletByName(arguments!!.getString(WALLET_NAME_EXTRA, "unknown"))
                 .observe(this, Observer { wallet -> wallet?.let { bindWallet(v, it) } })
+
         return v
     }
 
-    private fun bindWallet(v: View, wallet: Wallet) {
-        account_title.text = wallet.name
-        tv_main_currency_name.text = wallet.mainCurrency
-        tv_secondary_currency_name.text = wallet.secondaryCurrency
+    private fun bindWallet(v: View, wallet: WalletData) {
+        account_title.text = wallet.walletName
+        tv_main_currency_name.text = wallet.mauinCurrency
+        //depricated
+//        tv_secondary_currency_name.text = wallet.secondaryCurrency
 
-        vm.getWalletTransactions(wallet.name).observe(this, Observer {
+        vm.getWalletTransactions(wallet.walletName).observe(this, Observer {
             it?.let {
                 val remainder = it.asSequence().sumByDouble { it.amount.toDouble() }
                 tv_main_currency_value.text = formatDecimalNumber(remainder)
@@ -54,23 +59,24 @@ class WalletCardFragment : BaseFragment<WalletViewModel>(), Injectable {
             }
         })
 
-        setupCurrency(wallet)
+        //setupCurrency(wallet)
     }
 
-    private fun setupCurrency(w: Wallet) {
-        vm.convertCurrency(w.mainCurrency, w.secondaryCurrency).observe(this, Observer { rate ->
+    /* depricated curency change
+    private fun setupCurrency(w: Wallet)   {
+        vm.convertCurrency(w.mainCurrency).observe(this, Observer { rate ->
             rate?.let {
                 tv_current_currency
                         .text = getString(R.string.template_currency)
-                        .format(w.mainCurrency, formatDecimalNumber(rate), w.secondaryCurrency)
+                        .format(w.mainCurrency, formatDecimalNumber(rate))
 
                 tv_secondary_currency_value
                         .text = formatDecimalNumber(tv_main_currency_value.text.toString().toDouble() * rate)
             }
         })
     }
-
-    private fun setupPieChart(v: View, transactions: List<Transaction>) {
+*/
+    private fun setupPieChart(v: View, transactions: List<TransactionData>) {
         val expenses = transactions.filter { it.amount.toFloat() < 0 }
         val overallAmount = expenses.asSequence().map { -it.amount.toFloat() }.sum()
 

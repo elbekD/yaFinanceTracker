@@ -1,64 +1,49 @@
 package ru.yahw.elbekd.financetracker.ui.wallet.operations
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.Dialog
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.format.DateUtils
+
 import android.view.View
 import android.widget.*
-import androidx.work.Data
+import androidx.work.*
+import ru.yahw.elbekd.financetracker.PeriodicSqlRequest
 import ru.yahw.elbekd.financetracker.R
 import ru.yahw.elbekd.financetracker.data.db.entities.TransactionData
 import ru.yahw.elbekd.financetracker.di.Injectable
-import ru.yahw.elbekd.financetracker.domain.model.Transaction
 import ru.yahw.elbekd.financetracker.ui.base.BaseDialog
 import ru.yahw.elbekd.financetracker.utils.makeNegative
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
-/**
- * Created by Elbek D. on 28.07.2018.
- */
-class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable {
+class PeriodicOperationFragment() : BaseDialog<PeriodicOperationVM>(), Injectable {
     companion object {
         private val amountRegex = """^\d+(\.\d*)?$""".toRegex()
         val TAG = TransactionDialogFragment::class.java.simpleName
-        fun newInstance() = TransactionDialogFragment()
+        fun newInstance() = PeriodicOperationFragment()
     }
 
-    private lateinit var vm: TransactionViewModel
+    private lateinit var vm: PeriodicOperationVM
     private lateinit var transactionDialog: AlertDialog
     private lateinit var dialogView: View
-
-    private val calendar = MutableLiveData<Calendar>().apply { value = Calendar.getInstance() }
-
-    private val datePickerDialog: DatePickerDialog by lazy {
-        val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-            calendar.value = calendar.value!!.apply { set(year, month, dayOfMonth) }
-        }
-        DatePickerDialog(activity, listener,
-                calendar.value!!.get(Calendar.YEAR),
-                calendar.value!!.get(Calendar.MONTH),
-                calendar.value!!.get(Calendar.DAY_OF_MONTH))
-    }
+    private var wm: WorkManager = WorkManager.getInstance()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         vm = getViewModel()
         val inflater = activity!!.layoutInflater
         val dialogBuilder = AlertDialog.Builder(activity)
-        val view = inflater.inflate(R.layout.dialog_transaction, null)
+        val view = inflater.inflate(R.layout.dialog_periodik_operation, null)
 
         dialogBuilder.setView(view)
-                .setTitle(R.string.transaction_add)
+                .setTitle(R.string.transaction_periodic_add)
                 .setPositiveButton(R.string.all_confirm) { _, _ ->
-                    vm.commitTransaction(gatherTransaction())
+                    setupWorkManager()
                 }
                 .setNegativeButton(R.string.all_cancel) { _, _ -> }
 
@@ -70,22 +55,8 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
         return transactionDialog
     }
 
-    private fun setupDateTextView(v: TextView) {
-        calendar.observe(this, Observer {
-            it?.let {
-                v.text = DateUtils.formatDateTime(activity, it.timeInMillis,
-                        DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_DATE)
-            }
-        })
-    }
-
     private fun setupViews(v: View) {
-        with(v.findViewById<TextView>(R.id.tv_transaction_date)) {
-            setupDateTextView(this)
-            setOnClickListener { datePickerDialog.show() }
-        }
         setupAdapters(v)
-        setupCurrency(v)
     }
 
     private fun setupAdapters(v: View) {
@@ -94,12 +65,6 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
                 val wallets = it.map { it }
                 val walletAdapter = ArrayAdapter<String>(v.context, android.R.layout.simple_spinner_dropdown_item, wallets)
                 with(v.findViewById<Spinner>(R.id.spinner_category)) {
-                    onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onNothingSelected(p0: AdapterView<*>?) {
-                        }
-
-                        override fun onItemSelected(root: AdapterView<*>, view: View?, position: Int, id: Long) = vm.setTransactionWallet(selectedItem.toString())
-                    }
                     adapter = walletAdapter
                 }
             }
@@ -116,6 +81,13 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
             it?.let {
                 val walletsAdapter = ArrayAdapter<String>(v.context, android.R.layout.simple_spinner_dropdown_item, it.map { it })
                 v.findViewById<Spinner>(R.id.spinner_wallets).adapter = walletsAdapter
+            }
+        })
+
+        vm.getTimeTypes().observe(this, Observer {
+            it?.let {
+                val timeAdapter = ArrayAdapter<String>(v.context, android.R.layout.simple_spinner_dropdown_item, it.map { it })
+                v.findViewById<Spinner>(R.id.spinner_perodic_time).adapter = timeAdapter
             }
         })
     }
@@ -146,25 +118,31 @@ class TransactionDialogFragment : BaseDialog<TransactionViewModel>(), Injectable
         })
     }
 
-    private fun gatherTransaction(): TransactionData {
-        val formatter = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault())
-        val date = formatter.parse(dialogView.findViewById<TextView>(R.id.tv_transaction_date).text.toString()).time
+    private fun gatherTransaction(): Data {
         val type = dialogView.findViewById<Spinner>(R.id.spinner_category).selectedItem.toString()
         val walletCurrency = dialogView.findViewById<Spinner>(R.id.spinner_curency).selectedItem.toString()
         val isNegative = dialogView.findViewById<RadioGroup>(R.id.operation_type).checkedRadioButtonId == R.id.income
         val amount = dialogView.findViewById<EditText>(R.id.input_amount).text!!.toString()
         val wallet = dialogView.findViewById<Spinner>(R.id.spinner_wallets).selectedItem.toString()
+        val chosenDate = dialogView.findViewById<Spinner>(R.id.spinner_perodic_time).selectedItem.toString()
 
-        fun createData(): Data {
-            return Data.Builder()
-                    .putString("walletName", wallet)
-                    .putLong("date", date)
-                    .putLong("amount", BigDecimal(amount).makeNegative(!isNegative).longValueExact())
-                    .putString("type", type)
-                    .putString("walletCurrency", walletCurrency)
-                    .build()
-        }
 
-        return TransactionData(wallet, date, BigDecimal(amount).makeNegative(!isNegative), type, walletCurrency)
+        return Data.Builder()
+                .putString("walletName", wallet)
+                .putLong("date", Calendar.getInstance().timeInMillis)
+                .putLong("amount", BigDecimal(amount).makeNegative(!isNegative).longValueExact())
+                .putString("type", walletCurrency)
+                .putString("walletCurrency", type)
+                .putString("chosenDate", chosenDate)
+                .build()
     }
+
+    private fun setupWorkManager() {
+        val sqlWorkBuilder = PeriodicWorkRequest.Builder(PeriodicSqlRequest::class.java, 15, TimeUnit.MINUTES)
+                .setInputData(gatherTransaction())
+                .build()
+
+        wm.enqueue(sqlWorkBuilder)
+    }
+
 }

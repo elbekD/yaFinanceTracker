@@ -10,10 +10,17 @@
     <string name="all_confirm">Confirm</string>
     <string name="all_remainder">Remainder</string>
     <string name="all_cancel">Cancel</string>
-
+    <string name="wallet_name">Enter wallet name</string>
     <string name="transaction_add">Add transaction</string>
+    <string name="transaction_periodic_add">Add periodic transaction</string>
+
     <string name="about_content">Yandex.Homework: Finance Tracker</string>
 
+    <string name="wallet">Wallet</string>
+    <string name="credit">Credit</string>
+    
+    <string name="add_wallet">Add wallet</string>
+    <string name="add">Add</string>
     <string name="template_date">%d.%d.%d</string>
     <string name="template_currency">1 %s = %s %s</string>
 

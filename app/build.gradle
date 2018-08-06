@@ -61,4 +61,19 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-all:$versions.hamcrest"
     androidTestImplementation "com.android.support.test:runner:$versions.runner"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$versions.espressoCore"
+
+    //DB
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
+
+    //LiveData
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+    //Rx
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+
+    //Test
+    testImplementation("org.assertj:assertj-core:3.10.0")
 }
+

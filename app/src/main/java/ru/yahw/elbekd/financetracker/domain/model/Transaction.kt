@@ -9,5 +9,4 @@ data class Transaction(val wallet: String,
                        val date: Long,
                        val amount: BigDecimal,
                        val currency: String,
-                       val type: String) {
-}
+                       val type: String)

@@ -5,6 +5,8 @@ import dagger.android.ContributesAndroidInjector
 import ru.yahw.elbekd.financetracker.ui.about.AboutFragment
 import ru.yahw.elbekd.financetracker.ui.main.MainFragment
 import ru.yahw.elbekd.financetracker.ui.wallet.WalletCardFragment
+import ru.yahw.elbekd.financetracker.ui.wallet.operations.NewWalletDialogFragment
+import ru.yahw.elbekd.financetracker.ui.wallet.operations.PeriodicOperationFragment
 import ru.yahw.elbekd.financetracker.ui.wallet.operations.TransactionDialogFragment
 
 /**
@@ -23,4 +25,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindTransactionDialogFragment(): TransactionDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindNewWalletDialogFragment(): NewWalletDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindPeriodicOperationFragment(): PeriodicOperationFragment
 }
